@@ -1,14 +1,14 @@
 import React from "react";
 import { SafeAreaView, View, ScrollView, Image, Text, StyleSheet, Pressable } from "react-native";
-
+ 
 interface Props {
   onNext?: () => void;
   onSkip?: () => void;
 }
-
+ 
 export default function IPhone1619(props: Props) {
   const { onNext, onSkip } = props;
-
+ 
   function handleSkip() {
     if (typeof onSkip === "function") {
       onSkip();
@@ -16,7 +16,7 @@ export default function IPhone1619(props: Props) {
     }
     console.log("Skip pressed");
   }
-
+ 
   function handleNext() {
     if (typeof onNext === "function") {
       onNext();
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   row3: {
     flexDirection: "row",
-    marginRight: 55,
+    marginRight: 31,
   },
   scrollView: {
     flex: 1,
