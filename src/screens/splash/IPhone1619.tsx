@@ -101,10 +101,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 65,
     marginHorizontal: 36,
+    marginTop:-60
   },
   row2: {
     flexDirection: "row",
     alignItems: "center",
+    
   },
   row3: {
     flexDirection: "row",
