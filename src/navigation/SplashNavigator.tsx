@@ -10,6 +10,8 @@ import IPhone1616 from '../screens/splash/IPhone1616';
 import IPhone1618 from '../screens/splash/IPhone1618';
 import IPhone1617 from '../screens/splash/IPhone1617';
 import IPhone1619 from '../screens/splash/IPhone1619';
+import { AuthNavigator } from './AuthNavigator';
+
 
 const Stack = createStackNavigator();
 
@@ -28,6 +30,7 @@ export function SplashNavigator({ onSplashComplete }: SplashNavigatorProps) {
     { name: 'IPhone1618', component: IPhone1618, duration: 3000 },
     { name: 'IPhone1617', component: IPhone1617, duration: 3000 },
     { name: 'IPhone1619', component: IPhone1619, duration: 3000 },
+    { name: 'Auth', component: AuthNavigator, isNavigator: true },
   ];
 
   useEffect(() => {
@@ -42,11 +45,16 @@ export function SplashNavigator({ onSplashComplete }: SplashNavigatorProps) {
     return () => clearTimeout(timer);
   }, [currentScreenIndex, onSplashComplete]);
 
-  const CurrentScreen = splashScreens[currentScreenIndex].component;
+  const CurrentScreen = splashScreens[currentScreenIndex];
+
+  if (CurrentScreen.isNavigator) {
+    const ScreenComponent = CurrentScreen.component;
+    return <ScreenComponent />;
+  }
 
   return (
     <View style={styles.container}>
-      <CurrentScreen />
+      <CurrentScreen.component />
     </View>
   );
 }
@@ -57,9 +65,7 @@ export function StackSplashNavigator({ onSplashComplete }: SplashNavigatorProps)
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        gestureEnabled: false,
       }}
-      initialRouteName="IPhone1661"
     >
       <Stack.Screen name="IPhone1661" component={IPhone1661} />
       <Stack.Screen name="IPhone1660" component={IPhone1660} />
@@ -68,6 +74,14 @@ export function StackSplashNavigator({ onSplashComplete }: SplashNavigatorProps)
       <Stack.Screen name="IPhone1618" component={IPhone1618} />
       <Stack.Screen name="IPhone1617" component={IPhone1617} />
       <Stack.Screen name="IPhone1619" component={IPhone1619} />
+      <Stack.Screen 
+        name="Auth" 
+        component={AuthNavigator}
+        options={{
+          gestureEnabled: false,
+          headerLeft: () => null,
+        }}
+      />
     </Stack.Navigator>
   );
 }

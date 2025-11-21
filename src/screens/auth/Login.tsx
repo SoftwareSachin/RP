@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { SafeAreaView, View, ImageBackground, ScrollView, Image, Text, TouchableOpacity, TextInput, Alert } from "react-native";
-export default (props) => {
+
+interface LoginProps {
+  // Add any props here if needed in the future
+}
+
+const Login: React.FC<LoginProps> = (props) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -288,3 +293,5 @@ export default (props) => {
 		</SafeAreaView>
 	)
 }
+
+export default Login;

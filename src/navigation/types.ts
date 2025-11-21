@@ -18,6 +18,7 @@ export type RootStackParamList = {
   EditProfile: undefined;
   SavedProperties: undefined;
   Notifications: undefined;
+  IPhone1642: undefined;
   Settings: undefined;
   HelpSupport: undefined;
   MapView: { properties: any[] };
@@ -38,6 +39,8 @@ export type AuthStackParamList = {
   Signup: undefined;
   ForgotPassword: undefined;
   OTPVerification: { phone?: string; email?: string };
+  IPhone1642: undefined;
+  Register: undefined;
 };
 
 export type MainTabParamList = {

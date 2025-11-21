@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
 // Import all splash screens
 import IPhone1660 from './IPhone1660';
 import IPhone1641 from './IPhone1641';
+import { AuthNavigator } from '../../navigation/AuthNavigator';
 import IPhone1616 from './IPhone1616';
 import IPhone1618 from './IPhone1618';
 import IPhone1617 from './IPhone1617';
@@ -23,6 +25,15 @@ export default function SplashFlowContainer({ onSplashComplete }: Props) {
     { name: 'IPhone1618', component: IPhone1618 },
     { name: 'IPhone1617', component: IPhone1617 },
     { name: 'IPhone1619', component: IPhone1619 },
+    { 
+      name: 'Auth', 
+      component: () => (
+        <NavigationContainer>
+          <AuthNavigator />
+        </NavigationContainer>
+      ), 
+      isNavigator: true 
+    },
   ];
 
   console.log('Current screen index:', currentScreenIndex);
@@ -47,33 +58,36 @@ export default function SplashFlowContainer({ onSplashComplete }: Props) {
     return () => clearTimeout(timer);
   }, [currentScreenIndex, onSplashComplete]);
 
-  const CurrentScreen = splashScreens[currentScreenIndex].component;
-  const isIPhone1616 = splashScreens[currentScreenIndex].name === 'IPhone1616';
-  const isIPhone1618 = splashScreens[currentScreenIndex].name === 'IPhone1618';
-  const isIPhone1617 = splashScreens[currentScreenIndex].name === 'IPhone1617';
-  const isIPhone1619 = splashScreens[currentScreenIndex].name === 'IPhone1619';
+  const CurrentScreen = splashScreens[currentScreenIndex];
   
-  console.log('Rendering screen:', splashScreens[currentScreenIndex].name, 'Index:', currentScreenIndex);
+  console.log('Rendering screen:', CurrentScreen.name, 'Index:', currentScreenIndex);
   
   const handleNext = () => {
     console.log('Next pressed, current index:', currentScreenIndex);
     if (currentScreenIndex < splashScreens.length - 1) {
-      setCurrentScreenIndex(currentScreenIndex + 1);
+      // If next screen is the Auth navigator, make sure we're at the correct screen index
+      const nextIndex = currentScreenIndex + 1;
+      setCurrentScreenIndex(nextIndex);
+      
+      // If the next screen is the Auth navigator, we don't need to do anything else
+      // as it will be handled by the navigation stack
     } else {
       onSplashComplete?.();
     }
   };
+
+  // If the current screen is a navigator (like AuthNavigator), render it directly
+  if (CurrentScreen.isNavigator) {
+    const ScreenComponent = CurrentScreen.component;
+    return <ScreenComponent />;
+  }
 
   return (
     <View style={styles.container}>
       <Text style={{ position: 'absolute', top: 50, left: 20, zIndex: 999, backgroundColor: 'red', color: 'white', padding: 5 }}>
         SplashFlow: {splashScreens[currentScreenIndex].name}
       </Text>
-      {isIPhone1616 || isIPhone1618 || isIPhone1617 || isIPhone1619 ? (
-        <CurrentScreen onNext={handleNext} />
-      ) : (
-        <CurrentScreen />
-      )}
+      <CurrentScreen.component onNext={handleNext} />
     </View>
   );
 }

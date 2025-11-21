@@ -1,6 +1,11 @@
 import React, {useState} from "react";
-import { SafeAreaView, View, ScrollView, ImageBackground, Image, Text, TouchableOpacity, TextInput, StyleSheet, } from "react-native";
-export default (props) => {
+import { SafeAreaView, View, ScrollView, ImageBackground, Image, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
+
+interface RegisterProps {
+  // Add any props here if needed in the future
+}
+
+const Register: React.FC<RegisterProps> = (props) => {
 	const [textInput1, onChangeTextInput1] = useState('');
 	return (
 		<SafeAreaView style={styles.container}>
@@ -288,3 +293,5 @@ const styles = StyleSheet.create({
 		alignItems: "flex-end",
 	},
 });
+
+export default Register;

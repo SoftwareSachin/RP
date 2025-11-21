@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   SafeAreaView,
   View,
@@ -8,6 +8,8 @@ import {
   Text,
   StyleSheet,
   Pressable,
+  Animated,
+  Easing,
 } from "react-native";
 
 interface NavigationLike {
@@ -22,6 +24,26 @@ interface Props {
 
 export default function IPhone1618(props: Props) {
   const { onSkip, onNext, navigation } = props || {};
+
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideUp = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideUp, {
+        toValue: 0,
+        duration: 700,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   function handleSkip() {
     if (typeof onSkip === "function") {
@@ -48,8 +70,20 @@ export default function IPhone1618(props: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateY: slideUp }],
+        },
+      ]}
+    >
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.column}>
           <ImageBackground
             source={{
@@ -103,7 +137,7 @@ export default function IPhone1618(props: Props) {
           </Pressable>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </Animated.View>
   );
 }
 
@@ -185,6 +219,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#00000000",
     borderRadius: 40,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
   text: {
     color: "#000000",
