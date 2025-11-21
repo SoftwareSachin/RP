@@ -7,6 +7,7 @@ import Login from '../screens/auth/Login';
 import Register from '../screens/auth/Register';
 import MobileLogin from '../screens/auth/mobilelogin';
 import Verification from '../screens/auth/Verification';
+import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 
 const Stack = createStackNavigator<AuthStackParamList>();
 
@@ -39,6 +40,13 @@ export function AuthNavigator() {
       <Stack.Screen 
         name="Verification" 
         component={Verification}
+      />
+      <Stack.Screen 
+        name="ForgotPassword" 
+        component={ForgotPasswordScreen}
+        options={{
+          headerShown: false
+        }} 
       />
     </Stack.Navigator>
   );

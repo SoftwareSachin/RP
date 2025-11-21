@@ -116,20 +116,22 @@ const Verification: React.FC<VerificationProps> = () => {
           {/* OTP Input Boxes */}
           <View style={styles.row}>
             {[0, 1, 2, 3].map((i) => (
-              <TextInput
-                key={i}
-                ref={(ref) => {
-                  inputs.current[i] = ref;
-                }}
-                style={i === 3 ? styles.box2 : styles.box}
-                keyboardType="number-pad"
-                maxLength={1}
-                value={otp[i]}
-                onChangeText={(val) => handleOTPChange(val, i)}
-                onKeyPress={(e) => handleKeyPress(e, i)}
-                textAlign="center"
-                fontSize={20}
-              />
+<TextInput
+  key={i}
+  ref={(ref) => { inputs.current[i] = ref; }}
+  style={[
+    i === 3 ? styles.box2 : styles.box,
+    { 
+      fontSize: 20,
+      textAlign: 'center' as const
+    }
+  ]}
+  keyboardType="number-pad"
+  maxLength={1}
+  value={otp[i]}
+  onChangeText={(val) => handleOTPChange(val, i)}
+  onKeyPress={(e) => handleKeyPress(e, i)}
+/>
             ))}
           </View>
 

@@ -59,12 +59,37 @@ export function SplashNavigator({ onSplashComplete }: SplashNavigatorProps) {
   );
 }
 
+// Custom transition configuration
+const forFade = ({ current, next }) => {
+  const opacity = current.progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
+
+  return {
+    cardStyle: {
+      opacity,
+      transform: [
+        {
+          translateX: current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [30, 0],
+          }),
+        },
+      ],
+    },
+  };
+};
+
 // Stack Navigator implementation
 export function StackSplashNavigator({ onSplashComplete }: SplashNavigatorProps) {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        cardStyle: { backgroundColor: 'transparent' },
+        cardStyleInterpolator: forFade,
+        cardOverlayEnabled: true,
       }}
     >
       <Stack.Screen name="IPhone1661" component={IPhone1661} />

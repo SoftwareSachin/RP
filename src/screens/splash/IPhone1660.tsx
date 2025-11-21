@@ -66,15 +66,18 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     text: {
-        color: "#B50E00",
-        fontSize: 36,
-        fontWeight: "bold",
-        marginBottom: 190,
+      color: "#111827",
+      fontSize: 30,
+      fontWeight: "700",
+      textAlign: "center",
+      letterSpacing: 0.5,
+      marginTop: 8,
+      marginBottom: 140,
     },
     blueText: {
-  color: "#003087",
-  fontSize: 36,
-  fontWeight: "bold",
-},
+      color: "#2563EB",
+      fontSize: 28,
+      fontWeight: "700",
+    },
 });
  

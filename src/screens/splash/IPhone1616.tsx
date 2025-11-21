@@ -43,20 +43,19 @@ export default function IPhone1616(props: Props) {
           tension: 40,
         }).start();
 
-        const currentValue = gestureState.dx;
-        if (currentValue > SLIDER_WIDTH * 0.75) {
+        // @ts-ignore
+        const currentPan = (pan as any)._value;
+        if (currentPan > SLIDER_WIDTH * 0.6) {
           // Complete the slide
+          setSliderCompleted(true);
           Animated.timing(pan, {
             toValue: SLIDER_WIDTH - THUMB_SIZE,
             duration: 300,
             easing: Easing.out(Easing.exp),
             useNativeDriver: false,
           }).start(() => {
-            setSliderCompleted(true);
             if (typeof onNext === "function") {
               onNext();
-            } else {
-              alert('Pressed!');
             }
           });
         } else {
@@ -94,6 +93,8 @@ export default function IPhone1616(props: Props) {
           </Text>
  
           <View style={styles.sliderContainer}>
+            {/* progress fill */}
+            <Animated.View style={[styles.progressFill, { width: Animated.add(pan, THUMB_SIZE) }]} />
             <View style={styles.sliderTrack} />
             {/* Static "Let's Go" text centered on the track */}
             {!sliderCompleted && (
@@ -103,7 +104,7 @@ export default function IPhone1616(props: Props) {
             )}
             {sliderCompleted && (
               <View style={styles.staticTextContainer} pointerEvents="none">
-                <Text style={[styles.staticText, { color: '#4CAF50' }]}>Go!</Text>
+                <Text style={[styles.staticText, { color: '#FFD700' }]}>Go</Text>
               </View>
             )}
             <Animated.View
@@ -112,22 +113,18 @@ export default function IPhone1616(props: Props) {
                 styles.sliderThumb,
                 {
                   transform: [{ translateX: pan }, { scale: scale }],
-                  backgroundColor: sliderCompleted ? '#4CAF50' : '#222222',
+                  backgroundColor: sliderCompleted ? '#FFD700' : '#222222',
                   shadowColor: '#000',
                   shadowOffset: { width: 0, height: 4 },
                   shadowOpacity: 0.3,
                   shadowRadius: 4,
                   elevation: 5,
-                  marginBottom:122
+                  marginBottom:0
    
                 },
               ]}
             >
-              <Image
-                source={{ uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/xk39dfgp_expires_30_days.png" }}
-                resizeMode={"stretch"}
-                style={styles.image2}
-              />
+              <Text style={{ color: '#FFFFFF', fontSize: 24, fontWeight: 'bold' }}>→</Text>
             </Animated.View>
           </View>
  
@@ -169,39 +166,45 @@ const styles = StyleSheet.create({
     borderRadius: 40,
   },
   text: {
-    color: "#000000",
-    fontSize: 32,
-    fontWeight: "bold",
+    color: "#121212",
+    fontSize: 28,
+    fontWeight: "600",
     textAlign: "center",
-    marginBottom: 10,
-    marginHorizontal: 25,
-    marginTop:-42
+    marginHorizontal: 30,
+    marginBottom: 16,
   },
   text2: {
-    color: "#414345",
-    fontSize: 16,
+    color: "#6D6E71",
+    fontSize: 14,
+    lineHeight: 20,
     textAlign: "center",
-    marginBottom: 80,
-    marginHorizontal: 36,
+    marginHorizontal: 40,
+    marginBottom: 24,
   },
   sliderContainer: {
     width: SLIDER_WIDTH,
     height: SLIDER_HEIGHT,
     justifyContent: 'center',
-    marginBottom: 10,
+    marginBottom: 0,
+  },
+  progressFill: {
+    position: 'absolute',
+    height: SLIDER_HEIGHT,
+    backgroundColor: '#FFD700',
+    borderRadius: 35,
   },
   sliderTrack: {
     position: 'absolute',
     height: 60,
     width: SLIDER_WIDTH,
-    backgroundColor: '#000000',
+    backgroundColor: '#E6E6E6',
     borderRadius: 35,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 4,
-    marginBottom:120
+    marginBottom:0
   },
   staticTextContainer: {
     position: 'absolute',
@@ -209,19 +212,19 @@ const styles = StyleSheet.create({
     height: SLIDER_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:121
+    marginBottom:0
    
   },
   staticText: {
-    color: '#FFFFFF',
-    fontSize: 20,
+    color: '#000000',
+    fontSize: 18,
     fontWeight: '700',
     textShadowColor: 'rgba(0, 0, 0, 0.4)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
-    marginBottom:10
   },
   sliderThumb: {
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     alignItems: 'center',
     height: THUMB_SIZE,

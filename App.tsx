@@ -14,6 +14,9 @@ import { PropertyDetailScreen } from './src/screens/PropertyDetailScreen';
 import { SearchScreen } from './src/screens/SearchScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import SplashFlowContainer from './src/screens/splash/SplashFlowContainer';
+import ForgotPasswordScreen from './src/screens/auth/ForgotPasswordScreen';
+import Login from './src/screens/auth/Login';
+import Register from './src/screens/auth/Register';
 
 // Import navigation types
 import { RootStackParamList } from './src/types/navigation';
@@ -74,7 +77,37 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTintColor: '#000000',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerBackTitle: 'Back',
+        }}>
+          <Stack.Screen 
+            name="Login" 
+            component={Login} 
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen 
+            name="Register" 
+            component={Register} 
+            options={{ 
+              title: 'Create Account',
+              headerShown: true,
+            }} 
+          />
+          <Stack.Screen 
+            name="ForgotPassword" 
+            component={ForgotPasswordScreen} 
+            options={{ 
+              title: 'Forgot Password',
+              headerShown: true,
+            }} 
+          />
           <Stack.Screen 
             name="Main" 
             component={MainTabs} 
@@ -85,10 +118,9 @@ export default function App() {
             component={PropertyDetailScreen} 
             options={{ 
               title: 'Property Details',
-              headerBackTitle: 'Back',
             }} 
           />
-                  </Stack.Navigator>
+        </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
     </SafeAreaProvider>

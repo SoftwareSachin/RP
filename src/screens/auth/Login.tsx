@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { SafeAreaView, View, ImageBackground, ScrollView, Image, Text, TouchableOpacity, TextInput, Alert } from "react-native";
- 
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { AuthStackParamList } from "../../navigation/types";
+
+type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
+
 interface LoginProps {
   // Add any props here if needed in the future
 }
- 
-const Login: React.FC<LoginProps> = (props) => {
+
+const Login: React.FC<LoginProps> = () => {
+    const navigation = useNavigation<LoginScreenNavigationProp>();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
- 
+    const [forgotPassword, setForgotPassword] = useState(false);
+
     const handleLogin = () => {
         // For demonstration, just alert the email and password
         Alert.alert("Login Pressed", `Email: ${email}\nPassword: ${password}`);
@@ -147,18 +154,12 @@ const Login: React.FC<LoginProps> = (props) => {
                                     />
                                 </View>
                             </View>
-                            <View
-                                style={{
-                                    alignItems: "flex-end",
-                                }}>
-                                <Text
-                                    style={{
-                                        color: "#808080",
-                                        fontSize: 12,
-                                        marginRight: 1,
-                                    }}>
-                                    {"Forget Password?"}
-                                </Text>
+                            <View style={{ alignItems: 'flex-end', marginTop: 8, marginBottom: 8 }}>
+                                <TouchableOpacity 
+                                    onPress={() => navigation.navigate('ForgotPassword')}
+                                >
+                                    <Text style={{ color: '#4A90E2', fontSize: 14, fontWeight: '500' }}>Forgot Password?</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>

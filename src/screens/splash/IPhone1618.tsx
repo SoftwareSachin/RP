@@ -123,7 +123,7 @@ export default function IPhone1618(props: Props) {
             accessibilityRole="button"
             accessibilityLabel="Skip"
           >
-            <Text style={{ color: "#000000", fontSize: 16 }}>{"Skip"}</Text>
+            <Text style={{ color: "#000000", fontSize: 16, fontWeight: '600' }}>Skip</Text>
           </Pressable>
 
           <Pressable
@@ -133,7 +133,7 @@ export default function IPhone1618(props: Props) {
             accessibilityRole="button"
             accessibilityLabel="Next"
           >
-            <Text style={{ color: "#000000", fontSize: 16 }}>{"Next"}</Text>
+            <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: '600' }}>Next</Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -146,51 +146,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
-  absoluteText: {
-    position: "absolute",
-    bottom: -420,
-    left: 44,
-    color: "#000000",
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    minWidth: 50,
-    minHeight: 40,
-    justifyContent: "center",
-    alignItems: "center",
+  scrollView: {
+    flex: 1,
+    backgroundColor: "#00000000",
+    borderRadius: 40,
   },
-  absoluteText2: {
-    position: "absolute",
-    bottom: -420,
-    right: 44,
-    color: "#000000",
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    minWidth: 50,
-    minHeight: 40,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  box: {
-    width: 32,
-    height: 4,
-    backgroundColor: "#000000",
-    borderRadius: 2,
-    marginRight: 12,
-  },
-  box2: {
-    width: 32,
-    height: 4,
-    backgroundColor: "#B50E00",
-    borderRadius: 2,
-    marginRight: 12,
-  },
-  box3: {
-    width: 32,
-    height: 4,
-    backgroundColor: "#000000",
-    borderRadius: 2,
+  scrollViewContent: {
+    flexGrow: 1,
   },
   column: {
     marginBottom: 63,
@@ -210,19 +172,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "100%",
   },
-  row: {
-    flexDirection: "row",
-    marginBottom: 7,
-    marginTop:-10
-  },
-  scrollView: {
-    flex: 1,
-    backgroundColor: "#00000000",
-    borderRadius: 40,
-  },
-  scrollViewContent: {
-    flexGrow: 1,
-  },
   text: {
     color: "#000000",
     fontSize: 32,
@@ -237,5 +186,69 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 88,
     marginHorizontal: 36,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 7,
+    marginTop: -10,
+  },
+  box: {
+    width: 32,
+    height: 4,
+    backgroundColor: "#000000",
+    borderRadius: 2,
+    marginHorizontal: 6,
+  },
+  box2: {
+    width: 32,
+    height: 4,
+    backgroundColor: "#B50E00",
+    borderRadius: 2,
+    marginHorizontal: 6,
+  },
+  box3: {
+    width: 32,
+    height: 4,
+    backgroundColor: "#000000",
+    borderRadius: 2,
+    marginHorizontal: 6,
+  },
+  absoluteText: {
+    position: "absolute",
+    bottom: -420,
+    left: 44,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 24,
+    backgroundColor: "#EFEFEF",
+    borderWidth: 1,
+    borderColor: "#CCCCCC",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    minWidth: 80,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  absoluteText2: {
+    position: "absolute",
+    bottom: -420,
+    right: 44,
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    borderRadius: 24,
+    backgroundColor: "#FFD700",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    minWidth: 80,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

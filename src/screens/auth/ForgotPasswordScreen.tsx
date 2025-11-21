@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ForgotPasswordScreenProps } from '../../types/navigation';
 import {
   SafeAreaView,
   View,
@@ -12,11 +13,13 @@ import {
   Alert
 } from "react-native";
 
-export default () => {
+const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState("");
 
   const handleSendLink = () => {
-    Alert.alert("Reset Link Sent", `Email: ${email}`);
+    Alert.alert("Reset Link Sent", `A password reset link has been sent to ${email}`);
+    // Optionally navigate back to login
+    navigation.goBack();
   };
 
   return (
@@ -101,6 +104,8 @@ export default () => {
     </SafeAreaView>
   );
 };
+
+export default ForgotPasswordScreen;
 
 const styles = StyleSheet.create({
   container: {

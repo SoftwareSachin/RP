@@ -470,7 +470,7 @@ const Register: React.FC<RegisterProps> = (props) => {
 									textAlign: width < 400 ? 'center' : 'left',
 									borderBottomWidth: 1,
 									borderBottomColor: '#B50E00',
-									paddingBottom: 1
+									paddingBottom: 0
 								}}>
 								{"Login"}
 							</Text>
