@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { TextInput as RNTextInput } from 'react-native';
+
+type VerificationProps = {
+  // Add any props if needed
+};
 import {
   SafeAreaView,
   View,
@@ -11,36 +16,36 @@ import {
   TextInput,
 } from "react-native";
 
-export default (props) => {
+const Verification: React.FC<VerificationProps> = () => {
   // ⏳ Timer State
   const [seconds, setSeconds] = useState(0);
   const [running, setRunning] = useState(false);
 
   // 🔢 OTP State
-  const [otp, setOtp] = useState(["", "", "", ""]);
-  const inputs = useRef([]);
+  const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
+  const inputs = useRef<(RNTextInput | null)[]>([]);
 
-  const handleOTPChange = (value, index) => {
+  const handleOTPChange = (value: string, index: number) => {
     if (value.length > 1) return; // only one digit allowed
 
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
 
-    if (value && index < 3) {
-      inputs.current[index + 1].focus();
+    if (value && index < 3 && inputs.current[index + 1]) {
+      inputs.current[index + 1]?.focus();
     }
   };
 
-  const handleKeyPress = (e, index) => {
-    if (e.nativeEvent.key === "Backspace" && otp[index] === "" && index > 0) {
-      inputs.current[index - 1].focus();
+  const handleKeyPress = (e: any, index: number) => {
+    if (e.nativeEvent.key === "Backspace" && otp[index] === "" && index > 0 && inputs.current[index - 1]) {
+      inputs.current[index - 1]?.focus();
     }
   };
 
   // ⏳ Timer logic
   useEffect(() => {
-    let interval;
+    let interval: NodeJS.Timeout;
 
     if (running && seconds > 0) {
       interval = setInterval(() => {
@@ -60,7 +65,7 @@ export default (props) => {
     setRunning(true);
   };
 
-  const formatTime = (secs) => {
+  const formatTime = (secs: number): string => {
     const m = Math.floor(secs / 60);
     const s = secs % 60;
     return `${m}:${s < 10 ? "0" + s : s}`;
@@ -113,7 +118,9 @@ export default (props) => {
             {[0, 1, 2, 3].map((i) => (
               <TextInput
                 key={i}
-                ref={(ref) => (inputs.current[i] = ref)}
+                ref={(ref) => {
+                  inputs.current[i] = ref;
+                }}
                 style={i === 3 ? styles.box2 : styles.box}
                 keyboardType="number-pad"
                 maxLength={1}
@@ -156,6 +163,8 @@ export default (props) => {
     </SafeAreaView>
   );
 };
+
+export default Verification;
 
 // 🎨 Styles
 const styles = StyleSheet.create({

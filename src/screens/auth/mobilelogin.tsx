@@ -1,13 +1,23 @@
 import React, {useState} from "react";
 import { SafeAreaView, View, ImageBackground, ScrollView, Image, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
-import CountryPicker from "react-native-country-picker-modal";
+import CountryPicker, { CountryCode } from "react-native-country-picker-modal";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { AuthStackParamList } from '../../navigation/types';
 
-export default (props) => {
+type MobileLoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'MobileLogin'>;
+
+interface MobileLoginProps {
+  navigation: MobileLoginScreenNavigationProp;
+}
+
+export default function MobileLogin({ navigation }: MobileLoginProps) {
 
   const [textInput1, onChangeTextInput1] = useState('');
-  const [countryCode, setCountryCode] = useState("IN");
+  const [countryCode, setCountryCode] = useState<CountryCode>("IN");
   const [callingCode, setCallingCode] = useState("91");
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,9 +102,42 @@ export default (props) => {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={()=>alert('Pressed!')}>
+          <TouchableOpacity 
+            style={[styles.button, isLoading && { opacity: 0.7 }]} 
+            onPress={async () => {
+              // Basic validation
+              if (textInput1.length !== 10) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+              }
+
+              try {
+                setIsLoading(true);
+                // Simulate API call (replace with actual API call)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // On success
+                setOtpSent(true);
+                alert(`OTP sent to +${callingCode}${textInput1}`);
+                
+                // Navigate to Verification screen with phone details
+                navigation.navigate('Verification', { 
+                  phoneNumber: textInput1,
+                  callingCode,
+                  countryCode
+                });
+                
+              } catch (error) {
+                console.error('Error sending OTP:', error);
+                alert('Failed to send OTP. Please try again.');
+              } finally {
+                setIsLoading(false);
+              }
+            }}
+            disabled={isLoading}
+          >
             <Text style={styles.text5}>
-              {"Get OTP"}
+              {isLoading ? 'Sending OTP...' : 'Get OTP'}
             </Text>
           </TouchableOpacity>
 

@@ -89,7 +89,13 @@ const IPhone1642: React.FC = () => {
 
   const handlePhonePress = () => {
     animateButtonPress(phoneBounce, () => {
-      Alert.alert('Info', 'Phone number login will be implemented soon');
+      try {
+        console.log('Navigating to Mobile Login screen');
+        navigation.navigate('MobileLogin');
+      } catch (error) {
+        console.error('Error navigating to Mobile Login:', error);
+        Alert.alert('Error', 'Failed to navigate to Mobile Login screen');
+      }
     });
   };
 

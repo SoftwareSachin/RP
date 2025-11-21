@@ -5,6 +5,8 @@ import { AuthStackParamList } from './types';
 import IPhone1642 from '../screens/auth/IPhone1642';
 import Login from '../screens/auth/Login';
 import Register from '../screens/auth/Register';
+import MobileLogin from '../screens/auth/mobilelogin';
+import Verification from '../screens/auth/Verification';
 
 const Stack = createStackNavigator<AuthStackParamList>();
 
@@ -29,6 +31,14 @@ export function AuthNavigator() {
       <Stack.Screen 
         name="Register" 
         component={Register}
+      />
+      <Stack.Screen 
+        name="MobileLogin" 
+        component={MobileLogin}
+      />
+      <Stack.Screen 
+        name="Verification" 
+        component={Verification}
       />
     </Stack.Navigator>
   );

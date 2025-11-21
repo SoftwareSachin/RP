@@ -216,27 +216,24 @@ const Login: React.FC<LoginProps> = (props) => {
 					<View 
 						style={{
 							flexDirection: 'row',
-							justifyContent: 'space-evenly',
-							marginHorizontal: 40,
-							marginBottom: 40,
+							justifyContent: 'center',
+							marginBottom: 10,
+							marginTop: 0,
 						}}>
 						<TouchableOpacity
 							activeOpacity={0.7}
 							onPress={handleGoogleLogin}
 							style={{
-								borderWidth: 1,
-								borderColor: '#808080',
-								borderRadius: 40,
-								padding: 10,
+								marginHorizontal: 20,
+								width: 70,
+								height: 70,
 								alignItems: 'center',
 								justifyContent: 'center',
-								width: 60,
-								height: 60,
 							}}>
 							<Image
 								source={{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/kwi0sLffHL/k8518ezz_expires_30_days.png"}}
 								resizeMode="contain"
-								style={{width: 30, height: 30}}
+								style={{width: 50, height: 50}}
 							/>
 						</TouchableOpacity>
 
@@ -244,19 +241,16 @@ const Login: React.FC<LoginProps> = (props) => {
 							activeOpacity={0.7}
 							onPress={handleFacebookLogin}
 							style={{
-								borderWidth: 1,
-								borderColor: '#808080',
-								borderRadius: 40,
-								padding: 10,
+								marginHorizontal: 20,
+								width: 70,
+								height: 70,
 								alignItems: 'center',
 								justifyContent: 'center',
-								width: 60,
-								height: 60,
 							}}>
 							<Image
 								source={{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/kwi0sLffHL/4nsyhrqg_expires_30_days.png"}}
 								resizeMode="contain"
-								style={{width: 30, height: 30}}
+								style={{width: 50, height: 50}}
 							/>
 						</TouchableOpacity>
 
@@ -264,19 +258,16 @@ const Login: React.FC<LoginProps> = (props) => {
 							activeOpacity={0.7}
 							onPress={handleAppleLogin}
 							style={{
-								borderWidth: 1,
-								borderColor: '#808080',
-								borderRadius: 40,
-								padding: 10,
+								marginHorizontal: 20,
+								width: 70,
+								height: 70,
 								alignItems: 'center',
 								justifyContent: 'center',
-								width: 60,
-								height: 60,
 							}}>
 							<Image
 								source={{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/kwi0sLffHL/ek9ycjqh_expires_30_days.png"}}
 								resizeMode="contain"
-								style={{width: 30, height: 30}}
+								style={{width: 50, height: 50}}
 							/>
 						</TouchableOpacity>
 					</View>

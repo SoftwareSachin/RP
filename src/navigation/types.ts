@@ -41,6 +41,8 @@ export type AuthStackParamList = {
   OTPVerification: { phone?: string; email?: string };
   IPhone1642: undefined;
   Register: undefined;
+  MobileLogin: undefined;
+  Verification: { phoneNumber: string; callingCode: string; countryCode: string };
 };
 
 export type MainTabParamList = {
