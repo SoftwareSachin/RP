@@ -25,33 +25,50 @@ if (Platform.OS === 'android') {
   }
 }
 
+// Define the type for ASSETS object
+type AssetsType = {
+  [key: string]: string;
+  chip: string;
+  visa: string;
+  mastercard: string;
+  rupay: string;
+  defaultCard: string;
+  checkIcon: string;
+  backIcon: string;
+  lockIcon: string;
+  cash: string;
+  defaultUpi: string;
+  gpay: string;
+  phonepe: string;
+  paytm: string;
+  bhim: string;
+};
+
 // --- Professional Assets ---
-const ASSETS = {
-    chip: "https://img.icons8.com/fluency/96/sim-card-chip.png",
-    visa: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png",
-    mastercard: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png",
-    rupay: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rupay-Logo.png/1200px-Rupay-Logo.png",
-    defaultCard: "https://img.icons8.com/color/96/bank-cards.png",
-    
-    // UI Icons
-    checkIcon: "https://img.icons8.com/emoji/48/check-mark-button-emoji.png",
-    backIcon: "https://cdn-icons-png.flaticon.com/512/271/271220.png",
-    lockIcon: "https://img.icons8.com/ios-filled/50/cccccc/lock.png",
-    cash: "https://img.icons8.com/color/96/cash-in-hand.png",
-    defaultUpi: "https://cdn-icons-png.flaticon.com/512/64/64572.png",
-    
-    // Payment Apps
-    gpay: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/bz42qkhq_expires_30_days.png",
-    phonepe: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/khbtubfe_expires_30_days.png",
-    paytm: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/nwb1pbx8_expires_30_days.png",
-    bhim: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/nhwb0jqx_expires_30_days.png",
+const ASSETS: AssetsType = {
+  chip: "https://img.icons8.com/fluency/96/sim-card-chip.png",
+  visa: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png",
+  mastercard: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png",
+  rupay: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rupay-Logo.png/1200px-Rupay-Logo.png",
+  defaultCard: "https://img.icons8.com/color/96/bank-cards.png",
+  // UI Icons
+  checkIcon: "https://img.icons8.com/emoji/48/check-mark-button-emoji.png",
+  backIcon: "https://cdn-icons-png.flaticon.com/512/271/271220.png",
+  lockIcon: "https://img.icons8.com/ios-filled/50/cccccc/lock.png",
+  cash: "https://img.icons8.com/color/96/cash-in-hand.png",
+  defaultUpi: "https://cdn-icons-png.flaticon.com/512/64/64572.png",
+  // Payment Apps
+  gpay: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/bz42qkhq_expires_30_days.png",
+  phonepe: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/khbtubfe_expires_30_days.png",
+  paytm: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/nwb1pbx8_expires_30_days.png",
+  bhim: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/nhwb0jqx_expires_30_days.png",
 };
 
 const UPI_APPS = [
-    { id: 'gpay', name: 'Google Pay', icon: ASSETS.gpay },
-    { id: 'phonepe', name: 'PhonePe', icon: ASSETS.phonepe },
-    { id: 'paytm', name: 'Paytm UPI', icon: ASSETS.paytm },
-    { id: 'bhim', name: 'BHIM', icon: ASSETS.bhim },
+  { id: 'gpay', name: 'Google Pay', icon: ASSETS.gpay },
+  { id: 'phonepe', name: 'PhonePe', icon: ASSETS.phonepe },
+  { id: 'paytm', name: 'Paytm UPI', icon: ASSETS.paytm },
+  { id: 'bhim', name: 'BHIM', icon: ASSETS.bhim },
 ];
 
 export default (props: any) => {
@@ -321,7 +338,7 @@ export default (props: any) => {
                                     onChangeText={handleCardNumberChange}
                                     maxLength={19}
                                 />
-                                <Image source={{ uri: ASSETS[cardType] || ASSETS.defaultCard }} style={{width: 35, height: 25}} resizeMode="contain" />
+                                <Image source={{ uri: cardType in ASSETS ? ASSETS[cardType] : ASSETS.defaultCard }} style={{width: 35, height: 25}} resizeMode="contain" />
                             </View>
 
                             <Text style={styles.label}>Card Holder Name</Text>
