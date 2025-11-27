@@ -16,13 +16,16 @@ import ThankYou from '../screens/auth/ThankYou';
 import Saved from '../screens/auth/Saved';
 import Saved1 from '../screens/auth/Saved1';
 import Payment from '../screens/auth/Payment';
+import MonthlyRent from '../screens/auth/MonthlyRent';
 import PaymentHistory from '../screens/auth/PaymentHistory';
 import TransactionSuccess from '../screens/auth/TransactionSuccess';
 import Account from '../screens/auth/Account';
+import FilterScreen from '../screens/auth/FilterScreen';
 import OccupiedProperty from '../screens/auth/OccupiedProperty';
 import PoliceVerification from '../screens/auth/PoliceVerification';
 import IPhone1647 from '../screens/auth/IPhone1647';
 import SettingsScreen from '../screens/auth/SettingScreen';
+import PersonalInfo from '../screens/auth/PersonalInfo';
 
 const Stack = createStackNavigator<AuthStackParamList>();
 
@@ -120,6 +123,13 @@ export function AuthNavigator() {
         }} 
       />
       <Stack.Screen 
+        name="MonthlyRent" 
+        component={MonthlyRent}
+        options={{
+          headerShown: false
+        }} 
+      />
+      <Stack.Screen 
         name="Payment" 
         component={Payment}
         options={{
@@ -136,6 +146,20 @@ export function AuthNavigator() {
       <Stack.Screen 
         name="Account" 
         component={Account}
+        options={{
+          headerShown: false
+        }} 
+      />
+      <Stack.Screen 
+        name="FilterScreen" 
+        component={FilterScreen}
+        options={{
+          headerShown: false
+        }} 
+      />
+      <Stack.Screen 
+        name="PersonalInfo" 
+        component={PersonalInfo}
         options={{
           headerShown: false
         }} 

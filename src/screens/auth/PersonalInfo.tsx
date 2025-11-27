@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -13,23 +13,17 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  ActivityIndicator,
-  Modal,
-  Animated,
-  Easing,
-  FlatList
+  ActivityIndicator
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import CountryPicker, { CountryCode, Country } from "react-native-country-picker-modal";
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 // --- ASSETS ---
 const ASSETS = {
     back: "https://cdn-icons-png.flaticon.com/512/271/271220.png",
     camera: "https://cdn-icons-png.flaticon.com/512/1042/1042339.png",
     user: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=250&auto=format&fit=crop",
-    success3D: "https://cdn-icons-png.flaticon.com/512/7518/7518748.png",
     
     // Field Icons
     person: "https://cdn-icons-png.flaticon.com/512/1077/1077114.png",
@@ -38,106 +32,7 @@ const ASSETS = {
     email: "https://cdn-icons-png.flaticon.com/512/542/542638.png",
     lock: "https://cdn-icons-png.flaticon.com/512/3064/3064197.png",
     location: "https://cdn-icons-png.flaticon.com/512/535/535239.png",
-    edit: "https://cdn-icons-png.flaticon.com/512/1159/1159633.png",
-    arrowDown: "https://cdn-icons-png.flaticon.com/512/2985/2985150.png"
-};
-
-// --- SUCCESS MODAL COMPONENT ---
-const SuccessModal = ({ visible, onClose }: { visible: boolean, onClose: () => void }) => {
-    const scaleAnim = useRef(new Animated.Value(0)).current;
-    const opacityAnim = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        if (visible) {
-            Animated.parallel([
-                Animated.spring(scaleAnim, { toValue: 1, friction: 5, tension: 60, useNativeDriver: true }),
-                Animated.timing(opacityAnim, { toValue: 1, duration: 300, useNativeDriver: true })
-            ]).start();
-        } else {
-            scaleAnim.setValue(0);
-            opacityAnim.setValue(0);
-        }
-    }, [visible]);
-
-    return (
-        <Modal transparent visible={visible} animationType="none">
-            <View style={styles.modalOverlay}>
-                <Animated.View 
-                    style={[
-                        styles.modalContainer, 
-                        { transform: [{ scale: scaleAnim }], opacity: opacityAnim }
-                    ]}
-                >
-                    <View style={styles.iconContainer}>
-                        <View style={styles.glowEffect} />
-                        <Image source={{ uri: ASSETS.success3D }} style={styles.successIcon} resizeMode="contain" />
-                    </View>
-                    <Text style={styles.modalTitle}>Profile Updated!</Text>
-                    <Text style={styles.modalSub}>Your personal information has been successfully saved.</Text>
-                    <TouchableOpacity style={styles.modalBtn} onPress={onClose}>
-                        <Text style={styles.modalBtnText}>Great!</Text>
-                    </TouchableOpacity>
-                </Animated.View>
-            </View>
-        </Modal>
-    );
-};
-
-// --- CUSTOM DATE PICKER MODAL ---
-const DatePickerModal = ({ visible, onClose, onSelect }: any) => {
-    const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const years = Array.from({ length: 100 }, (_, i) => (2024 - i).toString());
-
-    const [selectedDay, setSelectedDay] = useState("15");
-    const [selectedMonth, setSelectedMonth] = useState("Dec");
-    const [selectedYear, setSelectedYear] = useState("1987");
-
-    const handleConfirm = () => {
-        onSelect(`${selectedDay} ${selectedMonth} ${selectedYear}`);
-        onClose();
-    };
-
-    if(!visible) return null;
-
-    return (
-        <Modal transparent visible={visible} animationType="fade">
-            <View style={styles.modalOverlay}>
-                <View style={styles.datePickerContainer}>
-                    <Text style={styles.pickerTitle}>Select Birth Date</Text>
-                    <View style={styles.pickerRow}>
-                        {/* Day */}
-                        <ScrollView style={styles.pickerColumn} showsVerticalScrollIndicator={false}>
-                            {days.map(d => (
-                                <TouchableOpacity key={d} onPress={() => setSelectedDay(d)} style={[styles.pickerItem, selectedDay === d && styles.pickerItemActive]}>
-                                    <Text style={[styles.pickerText, selectedDay === d && styles.pickerTextActive]}>{d}</Text>
-                                </TouchableOpacity>
-                            ))}
-                        </ScrollView>
-                        {/* Month */}
-                        <ScrollView style={styles.pickerColumn} showsVerticalScrollIndicator={false}>
-                            {months.map(m => (
-                                <TouchableOpacity key={m} onPress={() => setSelectedMonth(m)} style={[styles.pickerItem, selectedMonth === m && styles.pickerItemActive]}>
-                                    <Text style={[styles.pickerText, selectedMonth === m && styles.pickerTextActive]}>{m}</Text>
-                                </TouchableOpacity>
-                            ))}
-                        </ScrollView>
-                        {/* Year */}
-                        <ScrollView style={styles.pickerColumn} showsVerticalScrollIndicator={false}>
-                            {years.map(y => (
-                                <TouchableOpacity key={y} onPress={() => setSelectedYear(y)} style={[styles.pickerItem, selectedYear === y && styles.pickerItemActive]}>
-                                    <Text style={[styles.pickerText, selectedYear === y && styles.pickerTextActive]}>{y}</Text>
-                                </TouchableOpacity>
-                            ))}
-                        </ScrollView>
-                    </View>
-                    <TouchableOpacity style={styles.modalBtn} onPress={handleConfirm}>
-                        <Text style={styles.modalBtnText}>Confirm Date</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </Modal>
-    );
+    edit: "https://cdn-icons-png.flaticon.com/512/1159/1159633.png"
 };
 
 export default function PersonalInfo() {
@@ -145,46 +40,34 @@ export default function PersonalInfo() {
 
   // --- Form State ---
   const [fullName, setFullName] = useState("Zenab Vxuh");
-  const [dob, setDob] = useState("15 Dec 1987");
+  const [dob, setDob] = useState("15/12/1987");
   const [mobile, setMobile] = useState("9876543210");
   const [email, setEmail] = useState("zenab@example.com");
-  const [gender, setGender] = useState("Female"); 
+  const [gender, setGender] = useState("Female"); // Male, Female
   const [password, setPassword] = useState("••••••••");
   const [address, setAddress] = useState("Malviya Nagar, Jaipur");
-  
-  // Country Picker State
-  const [countryCode, setCountryCode] = useState<CountryCode>('IN');
-  const [callingCode, setCallingCode] = useState('91');
-  const [isCountryPickerVisible, setCountryPickerVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   // --- Handlers ---
   const handleSave = () => {
       setIsLoading(true);
-      // Simulate API Call
       setTimeout(() => {
           setIsLoading(false);
-          setShowSuccess(true);
+          Alert.alert("Success", "Profile updated successfully!", [
+              { text: "OK", onPress: () => navigation.goBack() }
+          ]);
       }, 1500);
-  };
-
-  const handleCloseSuccess = () => {
-      setShowSuccess(false);
-      navigation.goBack();
   };
 
   const handleChangePassword = () => {
       Alert.alert("Change Password", "Navigating to password reset flow...");
   };
 
-  const onSelectCountry = (country: Country) => {
-    setCountryCode(country.cca2);
-    setCallingCode(country.callingCode[0]);
-    setCountryPickerVisible(false);
+  const handleDatePick = () => {
+      Alert.alert("Select Date", "Opening Date Picker...");
+      // Implement DateTimePicker here
   };
 
   // --- Render Helper ---
@@ -269,42 +152,26 @@ export default function PersonalInfo() {
                     
                     {renderInput("Full Name", fullName, setFullName, ASSETS.person, "name")}
 
-                    {/* Date of Birth (Functional) */}
+                    {/* Date of Birth (Custom Interaction) */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>Date of Birth</Text>
                         <TouchableOpacity 
                             style={[styles.inputContainer, focusedField === 'dob' && styles.inputFocused]} 
-                            onPress={() => setShowDatePicker(true)}
+                            onPress={handleDatePick}
                         >
                             <Image source={{ uri: ASSETS.calendar }} style={styles.inputIcon} />
                             <Text style={styles.inputTextDisplay}>{dob}</Text>
                         </TouchableOpacity>
                     </View>
 
-                    {/* Mobile Number (Functional Country Picker) */}
+                    {/* Mobile Number */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>Mobile Number</Text>
                         <View style={[styles.inputContainer, focusedField === 'mobile' && styles.inputFocused]}>
-                            <TouchableOpacity 
-                                style={styles.countryCodeBtn} 
-                                onPress={() => setCountryPickerVisible(true)}
-                            >
-                                <CountryPicker
-                                    visible={isCountryPickerVisible}
-                                    onClose={() => setCountryPickerVisible(false)}
-                                    onSelect={onSelectCountry}
-                                    countryCode={countryCode}
-                                    withFlag
-                                    withCallingCode
-                                    withFilter
-                                    containerButtonStyle={{display: 'none'}} // Hide default
-                                />
-                                <Text style={styles.countryText}>+{callingCode}</Text>
-                                <Image source={{ uri: ASSETS.arrowDown }} style={styles.dropdownIcon} />
-                            </TouchableOpacity>
-
+                            <View style={styles.countryCode}>
+                                <Text style={styles.countryText}>+91</Text>
+                            </View>
                             <View style={styles.verticalLine} />
-                            
                             <TextInput 
                                 style={styles.input} 
                                 value={mobile} 
@@ -334,26 +201,19 @@ export default function PersonalInfo() {
                         </View>
                     </View>
 
-                    {/* Password Row */}
+                    {/* Password Row (Read Only + Link) */}
                     {renderInput("Password", password, setPassword, ASSETS.lock, "password", true, false)}
 
-                    {/* Address (Fixed Alignment & Icon) */}
+                    {/* Address (Multiline) */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>Address</Text>
-                        <View style={[
-                            styles.inputContainer, 
-                            { height: 100, alignItems: 'flex-start' }, // Increased height, top alignment
-                            focusedField === 'address' && styles.inputFocused
-                        ]}>
-                            {/* Icon has top margin to align with first line of text */}
-                            <Image source={{ uri: ASSETS.location }} style={[styles.inputIcon, { marginTop: 15 }]} />
+                        <View style={[styles.inputContainer, {height: 80, alignItems: 'flex-start', paddingTop: 12}, focusedField === 'address' && styles.inputFocused]}>
+                            <Image source={{ uri: ASSETS.location }} style={styles.inputIcon} />
                             <TextInput 
-                                style={[styles.input, { height: '100%', textAlignVertical: 'top', paddingTop: 12 }]} 
+                                style={[styles.input, {height: '100%', textAlignVertical: 'top'}]} 
                                 value={address} 
                                 onChangeText={setAddress}
                                 multiline
-                                placeholder="Enter full address"
-                                placeholderTextColor="#AAA"
                                 onFocus={() => setFocusedField('address')}
                                 onBlur={() => setFocusedField(null)}
                             />
@@ -378,11 +238,6 @@ export default function PersonalInfo() {
             </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
-
-      {/* Popups */}
-      <SuccessModal visible={showSuccess} onClose={handleCloseSuccess} />
-      <DatePickerModal visible={showDatePicker} onClose={() => setShowDatePicker(false)} onSelect={setDob} />
-
     </View>
   );
 }
@@ -438,14 +293,13 @@ const styles = StyleSheet.create({
   inputFocused: { borderColor: '#FFDD32', backgroundColor: '#FFFBE6' },
   inputIcon: { width: 20, height: 20, tintColor: '#9CA3AF', marginRight: 12 },
   input: { flex: 1, fontSize: 15, color: '#1F2937' },
-  inputTextDisplay: { flex: 1, fontSize: 15, color: '#1F2937' }, 
+  inputTextDisplay: { flex: 1, fontSize: 15, color: '#1F2937' }, // For non-editable triggers
   
   changeLink: { color: '#B50E00', fontWeight: 'bold', fontSize: 13 },
 
   // Country Code
-  countryCodeBtn: { flexDirection: 'row', alignItems: 'center', paddingRight: 10 },
-  countryText: { fontWeight: 'bold', color: '#333', marginRight: 5 },
-  dropdownIcon: { width: 10, height: 10, tintColor: '#666' },
+  countryCode: { paddingRight: 10 },
+  countryText: { fontWeight: 'bold', color: '#333' },
   verticalLine: { width: 1, height: '60%', backgroundColor: '#DDD', marginRight: 10 },
 
   // Gender Selector
@@ -464,26 +318,5 @@ const styles = StyleSheet.create({
       justifyContent: 'center', alignItems: 'center', 
       shadowColor: "#FFDD32", shadowOffset: {width: 0, height: 4}, shadowOpacity: 0.4, shadowRadius: 10, elevation: 5
   },
-  submitText: { fontSize: 18, fontWeight: 'bold', color: '#000' },
-
-  // Modal Styles
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center' },
-  modalContainer: { width: '85%', backgroundColor: '#FFF', borderRadius: 25, padding: 30, alignItems: 'center', elevation: 20, shadowColor: "#000", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.3, shadowRadius: 20 },
-  iconContainer: { marginBottom: 20, alignItems: 'center', justifyContent: 'center', position: 'relative' },
-  successIcon: { width: 80, height: 80, zIndex: 10 },
-  glowEffect: { position: 'absolute', width: 100, height: 100, borderRadius: 50, backgroundColor: '#FFDD32', opacity: 0.2 },
-  modalTitle: { fontSize: 22, fontWeight: '900', color: '#000', textAlign: 'center', marginBottom: 10 },
-  modalSub: { fontSize: 15, color: '#666', textAlign: 'center', lineHeight: 22, marginBottom: 30 },
-  modalBtn: { backgroundColor: '#FFDD32', paddingVertical: 14, paddingHorizontal: 40, borderRadius: 30, width: '100%', alignItems: 'center', elevation: 5 },
-  modalBtnText: { fontSize: 16, fontWeight: 'bold', color: '#000' },
-
-  // Date Picker
-  datePickerContainer: { width: '90%', backgroundColor: '#FFF', borderRadius: 20, padding: 20, alignItems: 'center', maxHeight: 400 },
-  pickerTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 15 },
-  pickerRow: { flexDirection: 'row', height: 200, width: '100%', marginBottom: 20 },
-  pickerColumn: { flex: 1 },
-  pickerItem: { padding: 10, alignItems: 'center', marginVertical: 2 },
-  pickerItemActive: { backgroundColor: '#FFFBE6', borderRadius: 8 },
-  pickerText: { fontSize: 16, color: '#666' },
-  pickerTextActive: { fontSize: 18, fontWeight: 'bold', color: '#000' },
+  submitText: { fontSize: 18, fontWeight: 'bold', color: '#000' }
 });

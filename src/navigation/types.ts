@@ -20,6 +20,7 @@ export type RootStackParamList = {
   Notifications: undefined;
   IPhone1642: undefined;
   Settings: undefined;
+  PersonalInfo: undefined;
   HelpSupport: undefined;
   MapView: { properties: any[] };
   Filter: { onApply: (filters: any) => void; initialFilters?: any };
@@ -55,6 +56,9 @@ export type AuthStackParamList = {
   TransactionSuccess: undefined; // Added for payment confirmation screen
   Account: undefined; // Added for Account/profile screen in Auth stack
   Settings: undefined; // Added for Settings screen in Auth stack
+  PersonalInfo: undefined; // Added for PersonalInfo screen in Auth stack
+  MonthlyRent: undefined; // Added for MonthlyRent screen in Auth stack
+  FilterScreen: undefined; // Added for filter UI in auth stack
   OccupiedProperty: undefined; // Added for occupied property details screen
   PoliceVerification: undefined; // Added for police verification screen
   IPhone1647: { propertyId: string }; // Added for property detail view
@@ -85,4 +89,5 @@ export type AccountStackParamList = {
   Referral: undefined;
   TermsAndConditions: undefined;
   PrivacyPolicy: undefined;
+  PersonalInfo: undefined;
 };

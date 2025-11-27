@@ -66,7 +66,13 @@ export default (props: any) => {
 
                 {/* Filter Buttons */}
                 <View style={styles.row3}>
-                    <TouchableOpacity style={styles.buttonColumn} onPress={() => alert('Filter Pressed!')}>
+                    <TouchableOpacity 
+                        style={styles.buttonColumn} 
+                        onPress={() => {
+                            // @ts-ignore - FilterScreen exists in AuthNavigator
+                            props.navigation.navigate('FilterScreen');
+                        }}
+                    >
                         <Text style={styles.text2}>{"Filter"}</Text>
                         <Image
                         source={{ uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/sE8iZvpPof/2pig70l9_expires_30_days.png" }}

@@ -203,7 +203,7 @@ export default function PaymentScreen() {
       { name: "Home", icon: ICONS.home, route: "HomeRent" },
       { name: "Lists", icon: ICONS.list, route: "ListProperty" },
       { name: "Saved", icon: ICONS.heartNav, route: "Saved" },
-      { name: "Payment", icon: ICONS.pay, route: "Payment" },
+      { name: "Payment", icon: ICONS.pay, route: "MonthlyRent" },
       { name: "Account", icon: ICONS.userNav, route: "Account" },
   ];
 

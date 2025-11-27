@@ -414,7 +414,14 @@ export default function HomeRentScreen() {
                   </View>
 
                   <View style={styles.actionButtonsContainer}>
-                      <ActionButton label="Filter" icon={ICONS.filter} onPress={() => Alert.alert("Filter")} />
+                      <ActionButton 
+                          label="Filter" 
+                          icon={ICONS.filter} 
+                          onPress={() => {
+                              // @ts-ignore - FilterScreen is registered in AuthNavigator
+                              navigation.navigate('FilterScreen');
+                          }} 
+                      />
                       <ActionButton label="Sort" icon={ICONS.sort} onPress={() => Alert.alert("Sort")} />
                       <ActionButton label="Map" icon={ICONS.map} onPress={() => Alert.alert("Map")} />
                   </View>

@@ -168,7 +168,7 @@ export default function ListProperty() {
       { name: "Home", icon: ASSETS.navHome, route: "Home" },      // MainTabs Home
       { name: "Lists", icon: ASSETS.navList, route: "Lists" },    // MainTabs Lists
       { name: "Saved", icon: ASSETS.navSaved, route: "Saved" },   // Auth stack Saved
-      { name: "Payment", icon: ASSETS.navPay, route: "Payment" }, // Auth stack Payment
+      { name: "Payment", icon: ASSETS.navPay, route: "MonthlyRent" }, // First go to MonthlyRent
       { name: "Account", icon: ASSETS.navUser, route: "Account" },
   ];
 

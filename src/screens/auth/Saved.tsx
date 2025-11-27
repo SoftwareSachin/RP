@@ -177,7 +177,14 @@ export default function SavedProperties() {
 
                 {/* Modern Action Buttons (Filter/Sort/Map) */}
                 <View style={styles.actionButtonsContainer}>
-                      <ActionButton label="Filter" icon={ASSETS.filter} onPress={() => Alert.alert("Filter", "Filter options...")} />
+                      <ActionButton 
+                          label="Filter" 
+                          icon={ASSETS.filter} 
+                          onPress={() => {
+                              // @ts-ignore - FilterScreen is registered in AuthNavigator
+                              navigation.navigate('FilterScreen');
+                          }} 
+                      />
                       <ActionButton label="Sort" icon={ASSETS.sort} onPress={() => Alert.alert("Sort", "Sort options...")} />
                       <ActionButton label="Map" icon={ASSETS.map} onPress={() => Alert.alert("Map", "Map View...")} />
                 </View>
