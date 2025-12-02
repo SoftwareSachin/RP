@@ -5,6 +5,9 @@ export interface User {
   token: string;
   avatar?: string;
   phone?: string;
+  gender?: string;
+  dob?: string;
+  address?: string;
   favorites?: string[]; // Array of property IDs
   createdAt?: string;
   updatedAt?: string;

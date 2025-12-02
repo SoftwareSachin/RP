@@ -11,6 +11,10 @@ export interface IUser {
   email: string;
   password: string;
   phone?: string;
+  avatar?: string;
+  gender?: string;
+  dob?: string;
+  address?: string;
   favorites: string[];
   created_at: Date;
   updated_at: Date;
@@ -49,6 +53,10 @@ export class UserModel {
           email VARCHAR(100) UNIQUE NOT NULL,
           password VARCHAR(255) NOT NULL,
           phone VARCHAR(20),
+          avatar TEXT,
+          gender VARCHAR(20),
+          dob VARCHAR(20),
+          address TEXT,
           favorites UUID[] DEFAULT '{}',
           created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

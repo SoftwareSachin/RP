@@ -107,7 +107,13 @@ export default function Account() {
                   <Image source={{ uri: ASSETS.back }} style={styles.backIcon} />
               </TouchableOpacity>
               <Text style={styles.headerTitle}>My Account</Text>
-              <TouchableOpacity onPress={() => Alert.alert("Edit Profile")} style={styles.editBtn}>
+              <TouchableOpacity
+                  onPress={() => {
+                      // @ts-ignore - route registered in AuthNavigator
+                      navigation.navigate('Settings');
+                  }}
+                  style={styles.editBtn}
+              >
                   <Image source={{ uri: ASSETS.edit }} style={styles.editIcon} />
               </TouchableOpacity>
           </View>

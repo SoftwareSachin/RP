@@ -84,6 +84,34 @@ export const useAuth = () => {
     }
   }, []);
 
+  const updateProfile = useCallback(async (updates: Partial<User>) => {
+    if (!authState.user) {
+      return { success: false, error: 'Not authenticated' };
+    }
+
+    try {
+      setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
+      // authService.updateProfile will be implemented in src/services/api.ts
+      const { user } = await (authService as any).updateProfile(authState.user.token, updates);
+      setAuthState(prev => ({
+        ...prev,
+        user,
+        isLoading: false,
+        isAuthenticated: true,
+        error: null,
+      }));
+      return { success: true, user };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Profile update failed';
+      setAuthState(prev => ({
+        ...prev,
+        isLoading: false,
+        error: errorMessage,
+      }));
+      return { success: false, error: errorMessage };
+    }
+  }, [authState.user]);
+
   const logout = useCallback(async () => {
     try {
       await authService.logout();
@@ -103,6 +131,7 @@ export const useAuth = () => {
     ...authState,
     login,
     register,
+    updateProfile,
     logout,
   };
 };

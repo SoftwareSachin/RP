@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   SafeAreaView,
   View,
@@ -16,6 +17,8 @@ import {
   ActivityIndicator
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
+import { useAuthContext } from "../../context/AuthContext";
 
 const { width } = Dimensions.get('window');
 
@@ -37,28 +40,53 @@ const ASSETS = {
 
 export default function PersonalInfo() {
   const navigation = useNavigation();
+  const { user, updateProfile } = useAuthContext();
 
   // --- Form State ---
-  const [fullName, setFullName] = useState("Zenab Vxuh");
-  const [dob, setDob] = useState("15/12/1987");
-  const [mobile, setMobile] = useState("9876543210");
-  const [email, setEmail] = useState("zenab@example.com");
-  const [gender, setGender] = useState("Female"); // Male, Female
+  const [fullName, setFullName] = useState(user?.name || "");
+  const [dob, setDob] = useState(user?.dob || "");
+  const [mobile, setMobile] = useState(user?.phone || "");
+  const [email] = useState(user?.email || "");
+  const [gender, setGender] = useState(user?.gender || "Male"); // Male, Female, Other
   const [password, setPassword] = useState("••••••••");
-  const [address, setAddress] = useState("Malviya Nagar, Jaipur");
+  const [address, setAddress] = useState(user?.address || "");
+  const [avatar, setAvatar] = useState(user?.avatar || ASSETS.user);
 
   const [isLoading, setIsLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   // --- Handlers ---
-  const handleSave = () => {
+  const handleSave = async () => {
+      if (!user) {
+          Alert.alert("Not logged in", "Please log in to update your profile.");
+          return;
+      }
+
       setIsLoading(true);
-      setTimeout(() => {
+      try {
+          const result = await updateProfile({
+              name: fullName,
+              phone: mobile,
+              gender,
+              dob,
+              address,
+              avatar,
+          });
+
           setIsLoading(false);
+
+          if (!result || !result.success) {
+              Alert.alert("Error", result?.error || "Profile update failed");
+              return;
+          }
+
           Alert.alert("Success", "Profile updated successfully!", [
               { text: "OK", onPress: () => navigation.goBack() }
           ]);
-      }, 1500);
+      } catch (error) {
+          setIsLoading(false);
+          Alert.alert("Error", "Something went wrong while updating your profile.");
+      }
   };
 
   const handleChangePassword = () => {
@@ -68,6 +96,63 @@ export default function PersonalInfo() {
   const handleDatePick = () => {
       Alert.alert("Select Date", "Opening Date Picker...");
       // Implement DateTimePicker here
+  };
+
+  const handlePickImage = () => {
+      Alert.alert(
+        "Update Profile Picture",
+        "Choose a source",
+        [
+          { text: "Camera", onPress: handlePickFromCamera },
+          { text: "Gallery", onPress: handlePickFromGallery },
+          { text: "Cancel", style: "cancel" },
+        ]
+      );
+  };
+
+  const handlePickFromGallery = async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+          Alert.alert("Permission required", "We need access to your photos to select a profile picture.");
+          return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 0.7,
+          base64: true,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+          const asset = result.assets[0];
+          const base64 = asset.base64;
+          const uri = base64 ? `data:image/jpeg;base64,${base64}` : asset.uri;
+          setAvatar(uri);
+      }
+  };
+
+  const handlePickFromCamera = async () => {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+          Alert.alert("Permission required", "We need access to your camera to take a profile picture.");
+          return;
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 0.7,
+          base64: true,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+          const asset = result.assets[0];
+          const base64 = asset.base64;
+          const uri = base64 ? `data:image/jpeg;base64,${base64}` : asset.uri;
+          setAvatar(uri);
+      }
   };
 
   // --- Render Helper ---
@@ -138,8 +223,8 @@ export default function PersonalInfo() {
                 {/* --- PROFILE AVATAR SECTION --- */}
                 <View style={styles.profileSection}>
                     <View style={styles.avatarWrapper}>
-                        <Image source={{ uri: ASSETS.user }} style={styles.avatar} />
-                        <TouchableOpacity style={styles.cameraBtn} onPress={() => Alert.alert("Upload", "Choose photo from gallery")}>
+                        <Image source={{ uri: avatar }} style={styles.avatar} />
+                        <TouchableOpacity style={styles.cameraBtn} onPress={handlePickImage}>
                             <Image source={{ uri: ASSETS.camera }} style={styles.cameraIcon} />
                         </TouchableOpacity>
                     </View>
@@ -183,7 +268,7 @@ export default function PersonalInfo() {
                         </View>
                     </View>
 
-                    {renderInput("Email", email, setEmail, ASSETS.email, "email", false, true, "email-address")}
+                    {renderInput("Email", email, () => {}, ASSETS.email, "email", false, false, "email-address")}
 
                     {/* Gender Selector */}
                     <View style={styles.inputGroup}>

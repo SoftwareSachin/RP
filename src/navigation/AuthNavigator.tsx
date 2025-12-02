@@ -24,7 +24,6 @@ import FilterScreen from '../screens/auth/FilterScreen';
 import OccupiedProperty from '../screens/auth/OccupiedProperty';
 import PoliceVerification from '../screens/auth/PoliceVerification';
 import IPhone1647 from '../screens/auth/IPhone1647';
-import SettingsScreen from '../screens/auth/SettingScreen';
 import PersonalInfo from '../screens/auth/PersonalInfo';
 
 const Stack = createStackNavigator<AuthStackParamList>();
@@ -166,7 +165,7 @@ export function AuthNavigator() {
       />
       <Stack.Screen 
         name="Settings" 
-        component={SettingsScreen}
+        component={PersonalInfo}
         options={{
           headerShown: false
         }} 

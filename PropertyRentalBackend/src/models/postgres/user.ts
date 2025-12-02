@@ -8,6 +8,10 @@ export interface IUser {
   email: string;
   password: string;
   phone?: string;
+  avatar?: string;
+  gender?: string;
+  dob?: string;
+  address?: string;
   favorites: string[];
   created_at: Date;
   updated_at: Date;
@@ -33,6 +37,10 @@ export class UserModel {
         email VARCHAR(100) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
         phone VARCHAR(20),
+        avatar TEXT,
+        gender VARCHAR(20),
+        dob VARCHAR(20),
+        address TEXT,
         favorites UUID[] DEFAULT '{}',
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -65,5 +73,39 @@ export class UserModel {
     if (!user) return false;
     
     return bcrypt.compare(candidatePassword, user.password);
+  }
+
+  async updateUserProfile(
+    id: string,
+    updates: Partial<Pick<IUser, 'name' | 'phone' | 'gender' | 'dob' | 'address' | 'avatar'>>
+  ) {
+    const fields: string[] = [];
+    const values: any[] = [];
+    let index = 1;
+
+    const allowedFields: (keyof IUser)[] = ['name', 'phone', 'gender', 'dob', 'address', 'avatar'];
+
+    for (const key of allowedFields) {
+      const value = (updates as any)[key];
+      if (value !== undefined) {
+        fields.push(`${key} = $${index}`);
+        values.push(value);
+        index++;
+      }
+    }
+
+    if (fields.length === 0) {
+      const existing = await this.query('SELECT * FROM users WHERE id = $1', [id]);
+      return existing.rows[0] || null;
+    }
+
+    values.push(id);
+
+    const result = await this.query(
+      `UPDATE users SET ${fields.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = $${index} RETURNING *`,
+      values
+    );
+
+    return result.rows[0] || null;
   }
 }

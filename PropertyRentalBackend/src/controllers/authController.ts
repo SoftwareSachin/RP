@@ -55,6 +55,60 @@ export async function registerUser(req: Request, res: Response) {
   }
 };
 
+// PUT /api/auth/profile
+export async function updateProfile(req: Request, res: Response) {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'Not authorized, no token' });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    let decoded: any;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+    } catch (error) {
+      return res.status(401).json({ message: 'Not authorized, token failed' });
+    }
+
+    const userId = decoded.id;
+
+    const { name, phone, gender, dob, address, avatar } = req.body;
+
+    const updatedUser = await userModel.updateUserProfile(userId, {
+      name,
+      phone,
+      gender,
+      dob,
+      address,
+      avatar,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      phone: updatedUser.phone,
+      token,
+      gender: updatedUser.gender,
+      dob: updatedUser.dob,
+      address: updatedUser.address,
+      avatar: updatedUser.avatar,
+    });
+  } catch (error: any) {
+    console.error('Update profile error:', error);
+    return res
+      .status(500)
+      .json({ message: 'Server error', error: error.message });
+  }
+};
+
 // POST /api/auth/login
 export async function loginUser(req: Request, res: Response) {
   try {
@@ -76,12 +130,25 @@ export async function loginUser(req: Request, res: Response) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    return res.json({
-      id: user.id,
+    const updatedUser = await userModel.updateUserProfile(user.id, {
       name: user.name,
-      email: user.email,
       phone: user.phone,
-      token: generateToken(user.id)
+      gender: user.gender,
+      dob: user.dob,
+      address: user.address,
+      avatar: user.avatar,
+    });
+
+    return res.json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      phone: updatedUser.phone,
+      token: generateToken(updatedUser.id),
+      gender: updatedUser.gender,
+      dob: updatedUser.dob,
+      address: updatedUser.address,
+      avatar: updatedUser.avatar,
     });
   } catch (error: any) {
     console.error('Login error:', error);
