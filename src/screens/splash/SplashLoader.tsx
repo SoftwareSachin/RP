@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import IPhone1617 from './IPhone1617';
+import Onboarding_3 from './Onboarding_3';
 import Splash_3 from './Splash_3';
 import splash_2 from './splash_2';
-import IPhone1661 from './IPhone1661';
+import Splash_1 from './Splash_1';
 
 interface Props {
   onSplashComplete: () => void;
 }
 
 const splashScreens = [
-  { component: IPhone1661, duration: 2000 },
+  { component: Splash_1, duration: 2000 },
   { component: splash_2, duration: 2000 },
   { component: Splash_3, duration: 2000 },
-  { component: IPhone1617, duration: 3000 },
+  { component: Onboarding_3, duration: 3000 },
 ];
 
 export default function SplashLoader({ onSplashComplete }: Props) {
