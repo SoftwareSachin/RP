@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1",
+    "title": "Modern Apartment in Downtown",
+    "description": "Beautiful modern apartment with great views",
+    "price": 1200,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 85,
+    "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&auto=format&fit=crop",
+    "isFavorite": false,
+    "address": "123 Main St, New York, NY",
+    "features": ["Air Conditioning", "Parking", "Gym", "Pool"]
+  },
+  {
+    "id": "2",
+    "title": "Cozy Studio Near Central Park",
+    "description": "Charming studio apartment steps away from Central Park",
+    "price": 950,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 45,
+    "image": "https://images.unsplash.com/photo-1502672260266-37c4adf0d675?w=800&auto=format&fit=crop",
+    "isFavorite": false,
+    "address": "456 Park Ave, New York, NY",
+    "features": ["Elevator", "Laundry", "Doorman"]
+  },
+  {
+    "id": "3",
+    "title": "Luxury Penthouse with City View",
+    "description": "Stunning penthouse with panoramic city views",
+    "price": 2500,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 180,
+    "image": "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&auto=format&fit=crop",
+    "isFavorite": false,
+    "address": "789 Broadway, New York, NY",
+    "features": ["Air Conditioning", "Parking", "Gym", "Pool", "Doorman", "Roof Deck"]
+  },
+  {
+    "id": "4",
+    "title": "Charming Brownstone in Brooklyn",
+    "description": "Beautifully renovated brownstone in a quiet neighborhood",
+    "price": 1800,
+    "bedrooms": 2,
+    "bathrooms": 1.5,
+    "area": 120,
+    "image": "https://images.unsplash.com/photo-1484154513053-6eaddc2f1f9b?w=800&auto=format&fit=crop",
+    "isFavorite": false,
+    "address": "101 Willow St, Brooklyn, NY",
+    "features": ["Backyard", "Laundry", "Dishwasher"]
+  },
+  {
+    "id": "5",
+    "title": "Modern Loft in Arts District",
+    "description": "Spacious loft with high ceilings and natural light",
+    "price": 1600,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 95,
+    "image": "https://images.unsplash.com/photo-1493804714600-6edb1cd93080?w=800&auto=format&fit=crop",
+    "isFavorite": false,
+    "address": "202 Art St, Queens, NY",
+    "features": ["High Ceilings", "Hardwood Floors", "Exposed Brick"]
+  }
+]

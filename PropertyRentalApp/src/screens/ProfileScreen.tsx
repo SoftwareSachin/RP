@@ -2,16 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
-const user = {
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  phone: '+1 234 567 890',
-  avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-  memberSince: '2023',
-  properties: 3,
-  reviews: 12,
-};
+import { useAuthContext } from '../context/AuthContext';
 
 const menuItems = [
   { icon: 'person-outline', label: 'Edit Profile', screen: 'EditProfile' },
@@ -24,9 +15,10 @@ const menuItems = [
 ];
 
 export function ProfileScreen({ navigation }: any) {
+  const { user, logout } = useAuthContext();
+
   const handleLogout = () => {
-    // Implement logout logic
-    console.log('User logged out');
+    logout();
   };
 
   return (
@@ -36,30 +28,30 @@ export function ProfileScreen({ navigation }: any) {
         <View style={styles.profileHeader}>
           <View style={styles.avatarContainer}>
             <Image 
-              source={{ uri: user.avatar }} 
+              source={{ uri: user?.avatar || 'https://randomuser.me/api/portraits/men/1.jpg' }} 
               style={styles.avatar} 
             />
             <TouchableOpacity style={styles.editIcon}>
               <Ionicons name="pencil" size={16} color="#fff" />
             </TouchableOpacity>
           </View>
-          <Text style={styles.userName}>{user.name}</Text>
-          <Text style={styles.userEmail}>{user.email}</Text>
+          <Text style={styles.userName}>{user?.name || user?.email || 'Guest User'}</Text>
+          <Text style={styles.userEmail}>{user?.email || 'No email'}</Text>
           
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
-              <Text style={styles.statValue}>{user.properties}</Text>
-              <Text style={styles.statLabel}>Properties</Text>
+              <Text style={styles.statValue}>{user?.phone || 'No phone'}</Text>
+              <Text style={styles.statLabel}>Phone</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
-              <Text style={styles.statValue}>{user.reviews}</Text>
-              <Text style={styles.statLabel}>Reviews</Text>
+              <Text style={styles.statValue}>{user?.id || '-'}</Text>
+              <Text style={styles.statLabel}>User ID</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
-              <Text style={styles.statValue}>{user.memberSince}</Text>
-              <Text style={styles.statLabel}>Member Since</Text>
+              <Text style={styles.statValue}>{user ? 'Active' : 'Guest'}</Text>
+              <Text style={styles.statLabel}>Status</Text>
             </View>
           </View>
         </View>

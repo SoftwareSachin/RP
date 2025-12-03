@@ -43,9 +43,9 @@ export const useAuth = () => {
   const login = useCallback(async ({ email, password }: LoginCredentials) => {
     try {
       setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-      const response = await authService.login(email, password);
+      const { user } = await authService.login({ email, password });
       setAuthState({
-        user: response as User,
+        user,
         isLoading: false,
         isAuthenticated: true,
         error: null,
@@ -65,9 +65,9 @@ export const useAuth = () => {
   const register = useCallback(async (userData: RegisterData) => {
     try {
       setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-      const response = await authService.register(userData);
+      const { user } = await authService.register(userData);
       setAuthState({
-        user: response as User,
+        user,
         isLoading: false,
         isAuthenticated: true,
         error: null,
@@ -83,6 +83,34 @@ export const useAuth = () => {
       return { success: false, error: errorMessage };
     }
   }, []);
+
+  const updateProfile = useCallback(async (updates: Partial<User>) => {
+    if (!authState.user) {
+      return { success: false, error: 'Not authenticated' };
+    }
+
+    try {
+      setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
+      // authService.updateProfile will be implemented in src/services/api.ts
+      const { user } = await (authService as any).updateProfile(authState.user.token, updates);
+      setAuthState(prev => ({
+        ...prev,
+        user,
+        isLoading: false,
+        isAuthenticated: true,
+        error: null,
+      }));
+      return { success: true, user };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Profile update failed';
+      setAuthState(prev => ({
+        ...prev,
+        isLoading: false,
+        error: errorMessage,
+      }));
+      return { success: false, error: errorMessage };
+    }
+  }, [authState.user]);
 
   const logout = useCallback(async () => {
     try {
@@ -103,6 +131,7 @@ export const useAuth = () => {
     ...authState,
     login,
     register,
+    updateProfile,
     logout,
   };
 };

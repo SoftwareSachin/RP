@@ -1,89 +1,130 @@
 // src/screens/SearchScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  StyleSheet, 
+  ScrollView, 
+  TouchableOpacity, 
+  FlatList, 
+  Image 
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../constants/theme';
-import { Property } from '../types/property';
 
-// Mock data
-const mockProperties: Property[] = [
+const mockProperties = [
   {
     id: '1',
     title: 'Modern Apartment',
     price: 1200,
-    location: '123 Main St, City',
-    images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&auto=format&fit=crop&q=60'],
+    location: 'Downtown',
+    image: 'https://picsum.photos/400/300?random=1',
     rating: 4.8,
     type: 'Apartment',
-    bedrooms: 2,
-    bathrooms: 1,
-    area: 850,
-    isFavorite: false,
-    isFeatured: true
   },
   {
     id: '2',
     title: 'Luxury Villa',
     price: 2500,
-    location: '456 Beach Rd, Coastal City',
-    images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=500&auto=format&fit=crop&q=60'],
+    location: 'Uptown',
+    image: 'https://picsum.photos/400/300?random=2',
     rating: 4.9,
     type: 'Villa',
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 2000,
-    isFavorite: true,
-    isFeatured: true
   },
+  {
+    id: '3',
+    title: 'Cozy Studio',
+    price: 850,
+    location: 'Midtown',
+    image: 'https://picsum.photos/400/300?random=3',
+    rating: 4.6,
+    type: 'Studio',
+  }
 ];
 
-export function SearchScreen() {
+export function SearchScreen({ navigation }: any) {
   const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredProperties = mockProperties.filter(property => 
-    property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    property.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const renderPropertyItem = ({ item }: { item: Property }) => (
-    <View style={styles.propertyCard}>
-      <Image 
-        source={{ uri: item.images[0] }} 
-        style={styles.propertyImage} 
-      />
-      <View style={styles.propertyInfo}>
-        <Text style={styles.price}>${item.price}/mo</Text>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.location}>{item.location}</Text>
-        <View style={styles.details}>
-          <Text style={styles.detailText}>{item.bedrooms} bd</Text>
-          <Text style={styles.detailText}>•</Text>
-          <Text style={styles.detailText}>{item.bathrooms} ba</Text>
-          <Text style={styles.detailText}>•</Text>
-          <Text style={styles.detailText}>{item.area} sqft</Text>
-        </View>
-      </View>
-    </View>
-  );
 
   return (
     <View style={styles.container}>
+      {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color={theme.colors.textSecondary} style={styles.searchIcon} />
+        <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search properties..."
+          placeholder="Search properties, locations..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholderTextColor={theme.colors.textSecondary}
+          autoFocus
         />
+        {searchQuery ? (
+          <TouchableOpacity onPress={() => setSearchQuery('')}>
+            <Ionicons name="close-circle" size={20} color="#999" />
+          </TouchableOpacity>
+        ) : null}
       </View>
-      <FlatList
-        data={filteredProperties}
-        renderItem={renderPropertyItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContent}
-      />
+
+      {/* Search Suggestions */}
+      {!searchQuery ? (
+        <View style={styles.suggestionsContainer}>
+          <Text style={styles.sectionTitle}>Recent Searches</Text>
+          {['Downtown', 'Beachfront', 'Luxury', 'Pet Friendly'].map((item, index) => (
+            <TouchableOpacity 
+              key={index} 
+              style={styles.suggestionItem}
+              onPress={() => setSearchQuery(item)}
+            >
+              <Ionicons name="time-outline" size={20} color="#666" />
+              <Text style={styles.suggestionText}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+
+          <Text style={[styles.sectionTitle, { marginTop: 24 }]}>Popular Searches</Text>
+          {['New York', 'Los Angeles', 'Miami', 'Chicago'].map((item, index) => (
+            <TouchableOpacity 
+              key={`popular-${index}`} 
+              style={styles.suggestionItem}
+              onPress={() => setSearchQuery(item)}
+            >
+              <Ionicons name="location-outline" size={20} color="#666" />
+              <Text style={styles.suggestionText}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : (
+        // Search Results
+        <FlatList
+          data={mockProperties.filter(property => 
+            property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            property.location.toLowerCase().includes(searchQuery.toLowerCase())
+          )}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity 
+              style={styles.resultItem}
+              onPress={() => navigation.navigate('PropertyDetail', { propertyId: item.id })}
+            >
+              <Image 
+                source={{ uri: item.image }} 
+                style={styles.resultImage} 
+                resizeMode="cover"
+              />
+              <View style={styles.resultInfo}>
+                <Text style={styles.resultPrice}>${item.price}/mo</Text>
+                <Text style={styles.resultTitle}>{item.title}</Text>
+                <View style={styles.resultMeta}>
+                  <Text style={styles.resultLocation}>{item.location}</Text>
+                  <View style={styles.ratingContainer}>
+                    <Ionicons name="star" size={14} color="#FFD700" />
+                    <Text style={styles.ratingText}>{item.rating}</Text>
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={styles.resultsContainer}
+        />
+      )}
     </View>
   );
 }
@@ -91,33 +132,55 @@ export function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: '#fff',
+    paddingTop: 16,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.background,
-    borderRadius: theme.borderRadius.md,
-    paddingHorizontal: theme.spacing.md,
-    margin: theme.spacing.md,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 10,
+    marginHorizontal: 16,
+    paddingHorizontal: 12,
+    height: 50,
   },
   searchIcon: {
-    marginRight: theme.spacing.sm,
+    marginRight: 8,
   },
   searchInput: {
     flex: 1,
-    height: 50,
-    color: theme.colors.text,
+    height: '100%',
+    fontSize: 16,
   },
-  listContent: {
-    padding: theme.spacing.md,
+  suggestionsContainer: {
+    padding: 16,
   },
-  propertyCard: {
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 12,
+  },
+  suggestionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  suggestionText: {
+    marginLeft: 12,
+    fontSize: 16,
+    color: '#333',
+  },
+  resultsContainer: {
+    padding: 16,
+  },
+  resultItem: {
+    flexDirection: 'row',
+    marginBottom: 16,
     backgroundColor: '#fff',
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
+    borderRadius: 12,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -125,36 +188,41 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  propertyImage: {
-    width: '100%',
-    height: 200,
+  resultImage: {
+    width: 100,
+    height: 100,
   },
-  propertyInfo: {
-    padding: theme.spacing.md,
+  resultInfo: {
+    flex: 1,
+    padding: 12,
   },
-  price: {
-    fontSize: 20,
+  resultPrice: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: theme.colors.text,
-    marginBottom: 4,
+    color: '#333',
   },
-  title: {
+  resultTitle: {
     fontSize: 16,
-    color: theme.colors.text,
-    marginBottom: 4,
+    color: '#333',
+    marginTop: 4,
   },
-  location: {
+  resultMeta: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  resultLocation: {
+    color: '#666',
     fontSize: 14,
-    color: theme.colors.textSecondary,
-    marginBottom: 8,
   },
-  details: {
+  ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  detailText: {
-    marginRight: 8,
-    fontSize: 14,
-    color: theme.colors.textSecondary,
+  ratingText: {
+    marginLeft: 4,
+    color: '#666',
+    fontWeight: '500',
   },
 });
