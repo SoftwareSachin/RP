@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import splash_2 from './splash_2';
 import Splash_3 from './Splash_3';
 import Onboarding_1 from './Onboarding_1';
-import IPhone1618 from './IPhone1618';
+import Onboarding from './Onboarding';
 import IPhone1617 from './IPhone1617';
 import IPhone1619 from './IPhone1619';
 
@@ -23,7 +23,7 @@ export default function SplashFlow({ onComplete, onSplashComplete }: Props) {
     { name: 'splash_2', component: splash_2, duration: 3000 },
     { name: 'Splash_3', component: Splash_3, duration: 3000 },
     { name: 'Onboarding_1', component: Onboarding_1, duration: 3000 },
-    { name: 'IPhone1618', component: IPhone1618, duration: 3000 },
+    { name: 'Onboarding', component: Onboarding, duration: 3000 },
     { name: 'IPhone1617', component: IPhone1617, duration: 3000 },
     { name: 'IPhone1619', component: IPhone1619, duration: 3000 },
   ];
